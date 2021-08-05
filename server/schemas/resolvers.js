@@ -11,7 +11,7 @@ const resolvers = {
                 .select('-__v -password')
                 .populate('books')
         },
-        
+
         users: async () => {
             return User.find()
                 .select('-__v -password')
@@ -66,6 +66,11 @@ const resolvers = {
             throw new AuthenticationError('You need to be logged in!');
         },
         //TODO!  NEED TO ADD DELETE BOOK! 
+        addBook: async (parent, args, context) => {
+            if (context.user) {
+                const book = await book.delete({ ...args, username: context.user.username })
+            };
+        }
     }
 };
 
