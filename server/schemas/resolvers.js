@@ -12,12 +12,12 @@ const resolvers = {
                 .populate('books')
         },
 
-        users: async () => {
-            return User.find()
-                .select('-__v -password')
-                .populate('books')
-                .populate('friends');
-        },
+        // users: async () => {
+        //     return User.find()
+        //         .select('-__v -password')
+        //         .populate('books')
+        //         .populate('friends');
+        // },
         books: async (parent, { username }) => {
             const params = username ? { username } : {};
             return book.find(params).sort({ createdAt: -1 });
@@ -66,12 +66,22 @@ const resolvers = {
             throw new AuthenticationError('You need to be logged in!');
         },
         //TODO!  NEED TO ADD DELETE BOOK! 
-        addBook: async (parent, args, context) => {
+        deleteBook: async (parent, { bookId }, context) => {
             if (context.user) {
-                const book = await book.delete({ ...args, username: context.user.username })
-            };
-        }
-    }
+                const user = await User.findByIdAndUpdate(
+                    //where
+                    { _id: context.user._id },
+                    //how to update user
+                    { $pull: { savedBooks: { bookId: bookId } } },
+                    // create a new list
+                    { new: true }
+                );
+
+                return user;
+            }
+            throw new AuthenticationError("You need to be logged in to do that!");
+        },
+    },
 };
 
 module.exports = resolvers;

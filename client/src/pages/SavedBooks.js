@@ -10,9 +10,11 @@ import {
 } from "react-bootstrap";
 
 import { GET_ME } from "../utils/queries";
-import { deleteBook } from "../utils/mutations";
 import Auth from "../utils/auth";
 import { removeBookId } from "../utils/localStorage";
+import { User } from "../../../server/models";
+import { QUERY_USER, QUERY_ME, deleteBook } from "../../../server/schemas/resolvers"
+
 
 const SavedBooks = () => {
 	const [userData, setUserData] = useState({});
@@ -20,15 +22,15 @@ const SavedBooks = () => {
 	// use this to determine if `useEffect()` hook needs to run again
 	const userDataLength = Object.keys(userData).length;
 	//******************No idea if this is right need helppp!   */
-	const { loading, data } = useQuery(userParam ? QUERY_USER : QUERY_ME, {
-		variables: { username: userParam },
+	const { loading, data } = useQuery([User] ? QUERY_USER : QUERY_ME, {
+		variables: { username: [User] },
 	});
 
 	const user = data?.me || data?.user || {};
 
 	// redirect to personal profile page if username is yours
-	if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
-		return <Redirect to="/profile" />;
+	if (Auth.loggedIn() && Auth.getProfile().data.username === [User]) {
+		return  User
 	}
 
 	if (loading) {

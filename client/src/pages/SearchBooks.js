@@ -1,4 +1,5 @@
 import React, { useState, useEffect, usemutation } from 'react';
+import { gql, useMutation } from 'apollo-server-core';
 import { Jumbotron, Container, Col, Form, Button, Card, CardColumns } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
@@ -78,6 +79,18 @@ const SearchBooks = () => {
     }
   };
 //***************************TODO USE APOLLO USEMUTATION() HOOK TO EXECUTE THE SAVE_BOOK MUTATION IN THE HANDLESAVEBOOK() FUNCTION INSTEAD OF THE SAVEBOOK() FUNCTION IMPORTED FROM API.  I HAVE ALREAD REPLACED INSTANCES OF HANDLESAVEBOOK WITH SAVE BOOK.  DO NOT KNOW HOW TO USE THE SYNTAX TO DO WHAT IT IS ASKING. */
+  const SAVE_BOOK = GQL`
+  mutation SaveBook($input: BookInput) {
+    saveBook($input){
+      authors
+      description
+      bookId
+      image
+      link
+      title
+    }
+  }
+  `;
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>
