@@ -1,7 +1,7 @@
-import React, { useState, useEffect, usemutation } from 'react';
-import { gql, useMutation } from 'apollo-server-core';
+import React, { useState, useEffect } from 'react';
+import { useMutation } from "@apollo/react-hooks";
 import { Jumbotron, Container, Col, Form, Button, Card, CardColumns } from 'react-bootstrap';
-
+import { SAVE_BOOK } from '../utils/mutations';
 import Auth from '../utils/auth';
 // import { saveBook, searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
@@ -14,7 +14,7 @@ const SearchBooks = () => {
 
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
-
+const [saveBook, { error }] = useMutation (SAVE_BOOK)
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
   useEffect(() => {
@@ -66,7 +66,13 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await saveBook(bookToSave, token);
+      const response = await saveBook({
+        variables: {
+          bookId: {
+            ...bookToSave
+          }
+        }
+      });
 
       if (!response.ok) {
         throw new Error('something went wrong!');
@@ -79,18 +85,6 @@ const SearchBooks = () => {
     }
   };
 //***************************TODO USE APOLLO USEMUTATION() HOOK TO EXECUTE THE SAVE_BOOK MUTATION IN THE HANDLESAVEBOOK() FUNCTION INSTEAD OF THE SAVEBOOK() FUNCTION IMPORTED FROM API.  I HAVE ALREAD REPLACED INSTANCES OF HANDLESAVEBOOK WITH SAVE BOOK.  DO NOT KNOW HOW TO USE THE SYNTAX TO DO WHAT IT IS ASKING. */
-  const SAVE_BOOK = GQL`
-  mutation SaveBook($input: BookInput) {
-    saveBook($input){
-      authors
-      description
-      bookId
-      image
-      link
-      title
-    }
-  }
-  `;
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>

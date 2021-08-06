@@ -1,4 +1,3 @@
-/** @format */
 
 import { gql } from "@apollo/client";
 
@@ -25,10 +24,10 @@ export const ADD_USER = gql`
 		}
 	}
 `;
-
+//********* TODO Need to send entire book through, not just ID */
 export const SAVE_BOOK = gql`
-	mutation addbook($id: ID!) {
-		addbook(bookId: $id) {
+	mutation addbook($bookData: bookInput) {
+		addBook(bookData: $bookData) {
 			_id
 			username
 			bookCount
@@ -42,7 +41,7 @@ export const SAVE_BOOK = gql`
 
 export const DELETE_BOOK = gql`
 	mutation deletebook($id: ID!) {
-		deletebook(bookId: $id) {
+		deleteBook(bookId: $id) {
 			_id
 			username
 			bookCount
