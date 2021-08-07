@@ -12,9 +12,7 @@ import {
 import { GET_ME } from "../utils/queries";
 import Auth from "../utils/auth";
 import { removeBookId } from "../utils/localStorage";
-import { User } from "../../../server/models";
-import { QUERY_USER, QUERY_ME, deleteBook } from "../../../server/schemas/resolvers"
-import { getUserData } from ""
+import { DELETE_BOOK } from "../utils/mutations"
 
 const SavedBooks = () => {
 	const [userData, setUserData] = useState({});
@@ -22,15 +20,15 @@ const SavedBooks = () => {
 	// use this to determine if `useEffect()` hook needs to run again
 	const userDataLength = Object.keys(userData).length;
 	//******************No idea if this is right need helppp!   */
-	const { loading, data } = useQuery([User] ? QUERY_USER : QUERY_ME, {
-		variables: { username: [User] },
+	const { loading, data } = useQuery(GET_ME ? GET_ME : GET_ME, {
+		variables: { username: GET_ME },
 	});
 
 	const user = data?.me || data?.user || {};
 
 	// redirect to personal profile page if username is yours
-	if (Auth.loggedIn() && Auth.getProfile().data.username === [User]) {
-		return  User
+	if (Auth.loggedIn() && Auth.getProfile().data.username === GET_ME) {
+		return  GET_ME
 	}
 
 	if (loading) {
@@ -60,7 +58,7 @@ const SavedBooks = () => {
 		}
 
 		try {
-			const response = await deleteBook(bookId, token);
+			const response = await DELETE_BOOK(bookId, token);
 
 			if (!response.ok) {
 				throw new Error("something went wrong!");

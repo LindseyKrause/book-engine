@@ -2,20 +2,24 @@
 
 import { gql } from "@apollo/client";
 
-export default GET_ME = gql` {
-	Query: {
-		me: async (parent, args, context) => {
-			if (context.user) {
-				const userData = await User.findOne({ _id: context.user._id })
-					.select("-__v -password")
-					.populate("books");
-
-				return userData;
+export const GET_ME = gql`
+	{
+		me {
+			_id
+			username
+			email
+			bookCount
+			savedBooks {
+				bookId
+				authors
+				description
+				title
+				image
+				link
 			}
+		}
+	}
+`;
 
-			throw new AuthenticationError("Not logged in");
-		},
-	},
-};`
 
 

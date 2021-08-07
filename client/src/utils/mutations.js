@@ -26,7 +26,7 @@ export const ADD_USER = gql`
 `;
 //********* TODO Need to send entire book through, not just ID */
 export const SAVE_BOOK = gql`
-	mutation addbook($bookData: bookInput) {
+	mutation savebook($bookData: bookInput) {
 		addBook(bookData: $bookData) {
 			_id
 			username
