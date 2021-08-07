@@ -14,7 +14,7 @@ import Auth from "../utils/auth";
 import { removeBookId } from "../utils/localStorage";
 import { User } from "../../../server/models";
 import { QUERY_USER, QUERY_ME, deleteBook } from "../../../server/schemas/resolvers"
-
+import { getUserData } from ""
 
 const SavedBooks = () => {
 	const [userData, setUserData] = useState({});
@@ -46,8 +46,8 @@ const SavedBooks = () => {
 		);
 	}
 
-	getUserData();
-	[userDataLength];
+	// getUserData();
+	// [userDataLength];
 
 	// create function that accepts the book's mongo _id value as param and deletes the book from the database
 

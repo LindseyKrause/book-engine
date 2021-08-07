@@ -9,7 +9,7 @@ const { typeDefs, resolvers } = require('./schemas');
 const { authMiddleware } = require('./utils/auth');
 //TODO ADD AUTH FILE!
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3008;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -27,10 +27,6 @@ if (process.env.NODE_ENV === 'production') {
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
-});
-
-app.get('*', (req, res) => {
-  res.status(404).sendFile(path.join(__dirname, './public/404.html'));
 });
 
 db.once('open', () => {

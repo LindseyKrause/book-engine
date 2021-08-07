@@ -1,7 +1,8 @@
 /** @format */
 
 import { gql } from "@apollo/client";
-const GET_ME = {
+
+export default GET_ME = gql` {
 	Query: {
 		me: async (parent, args, context) => {
 			if (context.user) {
@@ -15,7 +16,6 @@ const GET_ME = {
 			throw new AuthenticationError("Not logged in");
 		},
 	},
-};
+};`
 
 
-export default GET_ME ;
