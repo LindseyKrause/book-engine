@@ -1,5 +1,6 @@
+/** @format */
 
-import gql from 'graphql-tag'; 
+import gql from "graphql-tag";
 
 export const LOGIN_USER = gql`
 	mutation login($email: String!, $password: String!) {
@@ -26,14 +27,13 @@ export const ADD_USER = gql`
 `;
 //********* TODO Need to send entire book through, not just ID */
 export const SAVE_BOOK = gql`
-	mutation savebook($bookData: bookInput) {
-		addBook(bookData: $bookData) {
+	mutation saveBook($bookData: bookInput) {
+		saveBook(bookData: $bookData) {
 			_id
 			username
-			bookCount
-			books {
-				_id
-				username
+			savedBooks {
+				bookId
+				title
 			}
 		}
 	}
@@ -44,10 +44,14 @@ export const DELETE_BOOK = gql`
 		deleteBook(bookId: $id) {
 			_id
 			username
-			bookCount
-			books {
-				_id
-				username
+			email
+			savedBooks {
+				bookId
+				authors
+				description
+				image
+				link
+				title
 			}
 		}
 	}

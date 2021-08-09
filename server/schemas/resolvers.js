@@ -8,9 +8,9 @@ const resolvers = {
     Query: {
         me: async (parent, args, context) => {
             if (context.user) {
-                return User.findOne({_id: context.user_id})
+                const userData = await User.findOne({_id: context.user_id})
                     .select('-__v -password')
-                    .populate('books')
+                return userData;
             }
         },
     },
@@ -46,12 +46,12 @@ const resolvers = {
         //     return book.findOne({ _id });
         // },
 
-        saveBook: async (parent, {bookData}, context) => {
-            if (context.user) {
+        saveBook: async (parent, {bookData}, {user}) => {
+            if (user) {
                 const updatedUser = await User.findByIdAndUpdate(
-                    { _id: context.user._id },
+                    { _id: user._id },
                     { $push: { savedBooks: bookData} },
-                    { new: true }
+                    { new: true, runValidators: true }
                 );
 
                 return updatedUser;
@@ -60,11 +60,11 @@ const resolvers = {
             throw new AuthenticationError('You need to be logged in!');
         },
         //TODO!  NEED TO ADD DELETE BOOK! 
-        deleteBook: async (parent, { bookId }, context) => {
-            if (context.user) {
+        deleteBook: async (parent, { bookId }, {user}) => {
+            if (user) {
                 const user = await User.findByIdAndUpdate(
                     //where
-                    { _id: context.user._id },
+                    { _id: user._id },
                     //how to update user
                     { $pull: { savedBooks: { bookId } } },
                     // create a new list
